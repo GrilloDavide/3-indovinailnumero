@@ -25,7 +25,6 @@ public class ServerThread extends Thread{
         try{
            startComm();
         }catch (Exception e){
-            System.out.println("Skill issue");
             e.printStackTrace();
         }
     }
