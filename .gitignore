@@ -1,3 +1,4 @@
 .idea/
-pom.xml
+.vscode/
+target/
 tcp_IndovinaIlNumero-3.iml
