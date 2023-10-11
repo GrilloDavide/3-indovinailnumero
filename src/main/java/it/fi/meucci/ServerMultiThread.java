@@ -15,7 +15,7 @@ public class ServerMultiThread {
         for(;;){
             System.out.println( " Server in attesa di un client " );
             Socket client = server.accept();
-            System.out.println("Il client "+client.getLocalAddress()+" si è collegato");
+            System.out.println("Il client "+client.getPort()+" si è collegato");
             ServerThread thread = new ServerThread(client);
             thread.start();
         }

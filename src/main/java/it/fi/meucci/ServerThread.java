@@ -31,25 +31,46 @@ public class ServerThread extends Thread{
 
     public void startComm() throws IOException {
 
-        int inputNumber;
+        String inputClient;
         int randomNumber = (int)(Math.random() * 1000);
             outClient.writeBytes("--INDOVINA IL NUMERO--\n");
             //outClient.writeBytes("  inserire un numero da 1 a 1000"+" il numero e "+randomNumber+"\n"); utilizzato in debug
-        outClient.writeBytes("  inserire un numero da 1 a 1000\n");
-        for(;;){
-            inputNumber = Integer.parseInt(inClient.readLine());
+        outClient.writeBytes("  inserire un numero da 1 a 1000, per terminare la comunicazione inviare 'TERMINA'\n");
 
-            System.out.println("[CLIENT] "+ randomNumber);
-            if(inputNumber == randomNumber ){
-                outClient.writeBytes("Hai indovinato!\n");
+        for(;;){
+            inputClient = inClient.readLine();
+            int inputNumber = 0;
+
+            System.out.println("[CLIENT "+client.getPort()+"] "+ inputClient);
+
+            if(inputClient.equals("TERMINA")){
+                outClient.writeBytes("La comunicazione verra' terminata\n");
                 break;
-            }else{
-                outClient.writeBytes("Sbagliato, riprova!\n");
             }
+
+            try {
+                inputNumber = Integer.parseInt(inputClient); //per gestire l'inserimento di caratteri
+                if(inputNumber == randomNumber ) {
+                    outClient.writeBytes("Hai indovinato!\n");
+                    break;
+                }
+                outClient.writeBytes("Sbagliato!\n");
+                if(inputNumber < randomNumber){
+                    outClient.writeBytes("Il numero da indovinare e' piu' grande\n");
+                }else
+                    outClient.writeBytes("Il numero da indovinare e' piu' piccolo\n");
+
+            } catch (Exception e) {
+
+                outClient.writeBytes("Errore:\n");
+                outClient.writeBytes("Non e' stato inviato un numero. Se si vuole terminare la comunicazione, inviare 'TERMINA'\n");
+            }
+
 
         }
 
-        System.out.println("Termine connessione con "+client.getLocalAddress());
+        outClient.writeBytes("Termine comunicazione\n");
+        System.out.println("Termine connessione con "+client.getPort());
         client.close();
     }
 }

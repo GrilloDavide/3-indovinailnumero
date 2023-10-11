@@ -16,20 +16,22 @@ public class Client2 {
         System.out.println( " Connessione effettuata " );
 
         Scanner inputTastiera = new Scanner(System.in);
-        String outputString = " ";
+        String output = " ";
         String inputString = " ";
 
         System.out.println("[SERVER] "+inServer.nextLine());
         System.out.println("[SERVER] "+inServer.nextLine());
 
         do{
+            System.out.print("[TU] ");output = inputTastiera.nextLine();
+            outServer.writeBytes(output + "\n");
 
-            System.out.print("[TU] ");outputString = inputTastiera.nextLine();
-            outServer.writeBytes(outputString + "\n");
+            System.out.println("[SERVER] "+inServer.nextLine());
             inputString = inServer.nextLine();
             System.out.println("[SERVER] "+inputString);
 
-        }while((!inputString.equals("Hai indovinato!")));
+        }while((!inputString.equals("Termine comunicazione")));
+
 
         mioSocket.close();
         inputTastiera.close();
